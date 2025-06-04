@@ -89,20 +89,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Search bar functionality
   const adminSearchInput = document.getElementById("adminSearchInput")
-  const adminSearchBtn = document.getElementById("adminSearchBtn")
-  const adminClearSearchBtn = document.getElementById("adminClearSearchBtn")
 
-  if (adminSearchInput && adminSearchBtn && adminClearSearchBtn) {
-    // Make search interactive as admin types
+  if (adminSearchInput) {
     adminSearchInput.addEventListener("input", handleAdminSearch)
     adminSearchInput.addEventListener("keyup", (e) => {
       if (e.key === "Enter") handleAdminSearch()
-    })
-    adminSearchBtn.addEventListener("click", handleAdminSearch)
-    adminClearSearchBtn.addEventListener("click", () => {
-      adminSearchInput.value = ""
-      filteredShipments = []
-      displayShipments()
     })
   }
 
@@ -114,7 +105,21 @@ document.addEventListener("DOMContentLoaded", () => {
       return
     }
     filteredShipments = shipments.filter(s => s.id.toUpperCase().includes(query))
+    // If searching, show the shipments tab
+    if (filteredShipments.length > 0 || query.length > 0) {
+      showShipmentsTab()
+    }
     displayShipments()
+  }
+
+  // Helper to show the shipments tab
+  function showShipmentsTab() {
+    const tabButtons = document.querySelectorAll(".tab-button")
+    const tabContents = document.querySelectorAll(".tab-content")
+    tabButtons.forEach((btn) => btn.classList.remove("active"))
+    tabContents.forEach((content) => content.classList.remove("active"))
+    document.querySelector('[data-tab="shipments"]').classList.add("active")
+    document.getElementById("shipmentsTab").classList.add("active")
   }
 
   // Initialize dashboard
@@ -542,6 +547,10 @@ if (copyBtn && trackingIdInput && copyIcon) {
     try {
       await navigator.clipboard.writeText(trackingIdInput.value);
       copyIcon.innerHTML = checkSVG; // Show checkmark on success
+
+      // Show a popup notification
+      showCopyPopup("Copied!");
+
       setTimeout(() => {
         copyIcon.innerHTML = clipboardSVG; // Restore clipboard icon
       }, 1500);
@@ -550,4 +559,37 @@ if (copyBtn && trackingIdInput && copyIcon) {
       alert("Failed to copy!");
     }
   });
+}
+
+// Add this function at the end of your file
+function showCopyPopup(message) {
+  let popup = document.createElement("div");
+  popup.textContent = message;
+  popup.style.position = "fixed";
+  popup.style.top = "30px";
+  popup.style.right = "30px";
+  popup.style.background = "#333";
+  popup.style.color = "#fff";
+  popup.style.padding = "12px 24px";
+  popup.style.borderRadius = "6px";
+  popup.style.boxShadow = "0 2px 8px rgba(0,0,0,0.15)";
+  popup.style.fontSize = "1rem";
+  popup.style.zIndex = 9999;
+  popup.style.opacity = "0";
+  popup.style.transition = "opacity 0.3s";
+
+  document.body.appendChild(popup);
+
+  // Fade in
+  setTimeout(() => {
+    popup.style.opacity = "1";
+  }, 10);
+
+  // Fade out and remove after 1.5s
+  setTimeout(() => {
+    popup.style.opacity = "0";
+    setTimeout(() => {
+      popup.remove();
+    }, 300);
+  }, 1500);
 }
