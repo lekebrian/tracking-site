@@ -33,13 +33,66 @@ async function getShipmentDetails(id) {
 
   // Get packages
   const [packages] = await db.query("SELECT * FROM packages WHERE shipment_id = ?", [id])
-  shipment.packages = packages
+  // Map package fields to camelCase
+  shipment.packages = packages.map(pkg => ({
+    id: pkg.id,
+    shipmentId: pkg.shipment_id,
+    quantity: pkg.quantity,
+    pieceType: pkg.piece_type,
+    description: pkg.description,
+  }))
 
   // Get history
   const [history] = await db.query("SELECT * FROM shipment_history WHERE shipment_id = ? ORDER BY date DESC, time DESC", [id])
-  shipment.history = history
+  // Map history fields to camelCase
+  shipment.history = history.map(h => ({
+    id: h.id,
+    shipmentId: h.shipment_id,
+    date: h.date,
+    time: h.time,
+    location: h.location,
+    status: h.status,
+    updatedBy: h.updated_by,
+    remarks: h.remarks,
+  }))
 
-  return shipment
+  // Map shipment fields to camelCase for frontend
+  return {
+    id: shipment.id,
+    description: shipment.description,
+    origin: shipment.origin,
+    destination: shipment.destination,
+    carrier: shipment.carrier,
+    expectedDeliveryDate: shipment.expected_delivery_date,
+    updated_at: shipment.updated_at,
+    status: shipment.status,
+    senderName: shipment.sender_name,
+    senderLocation: shipment.sender_location,
+    senderEmail: shipment.sender_email,
+    senderPhone: shipment.sender_phone,
+    receiverName: shipment.receiver_name,
+    receiverAddress: shipment.receiver_address,
+    receiverEmail: shipment.receiver_email,
+    receiverPhone: shipment.receiver_phone,
+    shipmentType: shipment.shipment_type,
+    shipmentMode: shipment.shipment_mode,
+    weight: shipment.weight,
+    numberOfBoxes: shipment.number_of_boxes,
+    carrierRefNumber: shipment.carrier_ref_number,
+    productName: shipment.product_name,
+    quantity: shipment.quantity,
+    totalFreight: shipment.total_freight,
+    departureTime: shipment.departure_time,
+    pickUpDate: shipment.pick_up_date,
+    pickUpTime: shipment.pick_up_time,
+    totalWeight: shipment.total_weight,
+    totalVolumetricWeight: shipment.total_volumetric_weight,
+    totalVolume: shipment.total_volume,
+    totalActualWeight: shipment.total_actual_weight,
+    comments: shipment.comments,
+    packages: shipment.packages,
+    history: shipment.history,
+  }
 }
 
 // Demo admin credentials
@@ -183,7 +236,4 @@ app.get("/", (req, res) => {
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`)
-  console.log("Demo admin credentials:")
-  console.log("Username: admin")
-  console.log("Password: admin123")
 })

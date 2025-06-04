@@ -25,7 +25,7 @@ DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `CreateShipment` (IN `p_id` VARCHAR(15), IN `p_description` TEXT, IN `p_origin` VARCHAR(255), IN `p_destination` VARCHAR(255), IN `p_sender_name` VARCHAR(255), IN `p_sender_location` VARCHAR(255), IN `p_sender_email` VARCHAR(255), IN `p_sender_phone` VARCHAR(50), IN `p_receiver_name` VARCHAR(255), IN `p_receiver_address` TEXT, IN `p_receiver_email` VARCHAR(255), IN `p_receiver_phone` VARCHAR(50), IN `p_carrier` ENUM('FedEx','DHL','USPS','UPS','TNT'), IN `p_shipment_type` ENUM('Air Freight','Sea Freight','Road Freight','Rail Freight'), IN `p_weight` DECIMAL(10,2), IN `p_created_by` INT)   BEGIN
+CREATE DEFINER=CURRENT_USER PROCEDURE `CreateShipment` (IN `p_id` VARCHAR(15), IN `p_description` TEXT, IN `p_origin` VARCHAR(255), IN `p_destination` VARCHAR(255), IN `p_sender_name` VARCHAR(255), IN `p_sender_location` VARCHAR(255), IN `p_sender_email` VARCHAR(255), IN `p_sender_phone` VARCHAR(50), IN `p_receiver_name` VARCHAR(255), IN `p_receiver_address` TEXT, IN `p_receiver_email` VARCHAR(255), IN `p_receiver_phone` VARCHAR(50), IN `p_carrier` ENUM('FedEx','DHL','USPS','UPS','TNT'), IN `p_shipment_type` ENUM('Air Freight','Sea Freight','Road Freight','Rail Freight'), IN `p_weight` DECIMAL(10,2), IN `p_created_by` INT)   BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
         ROLLBACK;
@@ -58,7 +58,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `CreateShipment` (IN `p_id` VARCHAR(
     COMMIT;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `GetShipmentDetails` (IN `tracking_id` VARCHAR(15))   BEGIN
+CREATE DEFINER=CURRENT_USER PROCEDURE `GetShipmentDetails` (IN `tracking_id` VARCHAR(15))   BEGIN
     -- Get main shipment info
     SELECT * FROM shipments WHERE id = tracking_id;
     
@@ -74,7 +74,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `GetShipmentDetails` (IN `tracking_i
     SELECT qr_code_data FROM qr_codes WHERE shipment_id = tracking_id;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `UpdateShipmentStatus` (IN `tracking_id` VARCHAR(15), IN `new_status` ENUM('Pending','In Transit','On Hold','Delivered'), IN `location` VARCHAR(255), IN `updated_by` VARCHAR(100), IN `remarks` TEXT)   BEGIN
+CREATE DEFINER=CURRENT_USER PROCEDURE `UpdateShipmentStatus` (IN `tracking_id` VARCHAR(15), IN `new_status` ENUM('Pending','In Transit','On Hold','Delivered'), IN `location` VARCHAR(255), IN `updated_by` VARCHAR(100), IN `remarks` TEXT)   BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
         ROLLBACK;
@@ -333,7 +333,7 @@ INSERT INTO `users` (`id`, `username`, `password_hash`, `role`, `created_at`, `u
 --
 DROP TABLE IF EXISTS `latest_shipment_status`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `latest_shipment_status`  AS SELECT `sh`.`shipment_id` AS `shipment_id`, `sh`.`date` AS `last_update_date`, `sh`.`time` AS `last_update_time`, `sh`.`location` AS `current_location`, `sh`.`status` AS `current_status`, `sh`.`updated_by` AS `updated_by`, `sh`.`remarks` AS `remarks` FROM (`shipment_history` `sh` join (select `shipment_history`.`shipment_id` AS `shipment_id`,max(concat(`shipment_history`.`date`,' ',`shipment_history`.`time`)) AS `latest_update` from `shipment_history` group by `shipment_history`.`shipment_id`) `latest` on(`sh`.`shipment_id` = `latest`.`shipment_id` and concat(`sh`.`date`,' ',`sh`.`time`) = `latest`.`latest_update`))  ;
+CREATE ALGORITHM=UNDEFINED DEFINER=CURRENT_USER SQL SECURITY DEFINER VIEW `latest_shipment_status`  AS SELECT `sh`.`shipment_id` AS `shipment_id`, `sh`.`date` AS `last_update_date`, `sh`.`time` AS `last_update_time`, `sh`.`location` AS `current_location`, `sh`.`status` AS `current_status`, `sh`.`updated_by` AS `updated_by`, `sh`.`remarks` AS `remarks` FROM (`shipment_history` `sh` join (select `shipment_history`.`shipment_id` AS `shipment_id`,max(concat(`shipment_history`.`date`,' ',`shipment_history`.`time`)) AS `latest_update` from `shipment_history` group by `shipment_history`.`shipment_id`) `latest` on(`sh`.`shipment_id` = `latest`.`shipment_id` and concat(`sh`.`date`,' ',`sh`.`time`) = `latest`.`latest_update`))  ;
 
 -- --------------------------------------------------------
 
@@ -342,7 +342,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `shipment_summary`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `shipment_summary`  AS SELECT `s`.`id` AS `id`, `s`.`description` AS `description`, `s`.`origin` AS `origin`, `s`.`destination` AS `destination`, `s`.`status` AS `status`, `s`.`carrier` AS `carrier`, `s`.`expected_delivery_date` AS `expected_delivery_date`, `s`.`sender_name` AS `sender_name`, `s`.`receiver_name` AS `receiver_name`, count(`p`.`id`) AS `package_count`, `s`.`total_weight` AS `total_weight`, `s`.`total_freight` AS `total_freight`, `s`.`created_at` AS `created_at`, `s`.`updated_at` AS `updated_at` FROM (`shipments` `s` left join `packages` `p` on(`s`.`id` = `p`.`shipment_id`)) GROUP BY `s`.`id``id`  ;
+CREATE ALGORITHM=UNDEFINED DEFINER=CURRENT_USER SQL SECURITY DEFINER VIEW `shipment_summary`  AS SELECT `s`.`id` AS `id`, `s`.`description` AS `description`, `s`.`origin` AS `origin`, `s`.`destination` AS `destination`, `s`.`status` AS `status`, `s`.`carrier` AS `carrier`, `s`.`expected_delivery_date` AS `expected_delivery_date`, `s`.`sender_name` AS `sender_name`, `s`.`receiver_name` AS `receiver_name`, count(`p`.`id`) AS `package_count`, `s`.`total_weight` AS `total_weight`, `s`.`total_freight` AS `total_freight`, `s`.`created_at` AS `created_at`, `s`.`updated_at` AS `updated_at` FROM (`shipments` `s` left join `packages` `p` on(`s`.`id` = `p`.`shipment_id`)) GROUP BY `s`.`id`  ;
 
 --
 -- Indexes for dumped tables
@@ -452,4 +452,4 @@ COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40101 SET COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
