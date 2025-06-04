@@ -274,13 +274,19 @@ img {
   min-height: 500px;
   display: flex;
   align-items: center;
-  background-color: #555;
+
   color: white;
   overflow: hidden;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(85, 85, 85, 0.6)),
-    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%23555" width="1200" height="600"/><circle fill="%23ff6b35" cx="200" cy="150" r="50" opacity="0.3"/><circle fill="%23ff6b35" cx="800" cy="400" r="80" opacity="0.2"/><circle fill="%23ff6b35" cx="1000" cy="200" r="60" opacity="0.25"/></svg>');
+  
   background-size: cover;
   background-position: center;
+  transition: background-image 1s ease-in-out;
+}
+
+.hero-bg-fade {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .hero-overlay {
@@ -289,7 +295,7 @@ img {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(85, 85, 85, 0.6));
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.3), rgba(85, 85, 85, 0.3));
   z-index: 2;
 }
 
@@ -318,6 +324,21 @@ img {
 .hero-btn {
   padding: 15px 30px;
   font-size: 18px;
+}
+
+@media (max-width: 600px) {
+  .hero {
+    min-height: 320px;
+    height: 50vh;
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+  .hero-title {
+    font-size: 28px;
+  }
+  .hero-subtitle {
+    font-size: 15px;
+  }
 }
 
 /* Stats Section */
@@ -444,8 +465,45 @@ img {
   gap: 10px;
 }
 
-.input-group .form-control {
-  flex: 1;
+/* Responsive input-group for admin dashboard create form */
+@media (max-width: 600px) {
+  .input-group {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .input-group .form-control {
+    width: 100%;
+  }
+  /* Only show icon for generate and copy buttons on mobile */
+  #generateTrackingBtn,
+  #copyTrackingBtn {
+    width: 44px !important;
+    min-width: 44px !important;
+    max-width: 44px !important;
+    height: 44px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+  #generateTrackingBtn .btn-text,
+  #copyTrackingBtn .btn-text {
+    display: none !important;
+  }
+  #generateTrackingBtn .btn-icon,
+  #copyTrackingBtn .btn-icon {
+    display: inline-block !important;
+    font-size: 22px;
+  }
+}
+
+/* By default, show text and hide icon */
+#generateTrackingBtn .btn-icon,
+#copyTrackingBtn .btn-icon {
+  display: none;
+  vertical-align: middle;
 }
 
 /* Error Message */

@@ -198,7 +198,7 @@
                 </div>
                 <div class="col col-sm-6 col-md-4 col-lg-3">
                     <div class="stat-card stat-card-dark wow slide-up" data-wow="fade-in">
-  <div class="stat-number" data-count="500">0</div>
+  <div class="stat-number" data-count="9500">0</div>
   <div class="stat-label">Shipments Delivered</div>
 </div>
                 </div>
@@ -779,6 +779,15 @@ window.addEventListener('load', animateOnScroll);
 window.addEventListener('resize', animateOnScroll);
 
 // Animated number counter (only when visible)
+function formatStatNumber(num, plus) {
+  if (num >= 1000) {
+    // Show one decimal if not a round thousand
+    let display = (num % 1000 === 0) ? (num / 1000) : (num / 1000).toFixed(1);
+    return display + 'k' + plus;
+  }
+  return num + plus;
+}
+
 function animateCountersOnView() {
   document.querySelectorAll('.stat-number[data-count]').forEach(el => {
     if (el.dataset.animated) return; // Prevent re-animating
@@ -797,9 +806,9 @@ function animateCountersOnView() {
         frame++;
         current = Math.round(target * (frame / totalFrames));
         if (frame >= totalFrames) {
-          el.textContent = target + plus;
+          el.textContent = formatStatNumber(target, plus);
         } else {
-          el.textContent = current + plus;
+          el.textContent = formatStatNumber(current, plus);
           requestAnimationFrame(update);
         }
       }
@@ -810,6 +819,38 @@ function animateCountersOnView() {
 window.addEventListener('scroll', animateCountersOnView);
 window.addEventListener('load', animateCountersOnView);
 window.addEventListener('resize', animateCountersOnView);
+
+// Slideshow for hero section
+const heroImages = [
+  "bg1.jpg",
+  "bg1.jpg",
+  "bg1.jpg"
+];
+let heroIndex = 0;
+const heroSection = document.querySelector('.hero');
+const heroGradient = "linear-gradient(rgba(0,0,0,0.1), rgba(85,85,85,0.1))";
+
+// Create fade overlay if not present
+let fadeDiv = document.createElement('div');
+fadeDiv.className = 'hero-bg-fade';
+heroSection.appendChild(fadeDiv);
+
+// Set initial background
+heroSection.style.backgroundImage = `${heroGradient}, url('${heroImages[heroIndex]}')`;
+
+function fadeToHeroBg(idx) {
+  fadeDiv.style.backgroundImage = `${heroGradient}, url('${heroImages[idx]}')`;
+  fadeDiv.style.opacity = 1;
+  setTimeout(() => {
+    heroSection.style.backgroundImage = `${heroGradient}, url('${heroImages[idx]}')`;
+    fadeDiv.style.opacity = 0;
+  }, 1200); // Match transition duration
+}
+
+setInterval(() => {
+  heroIndex = (heroIndex + 1) % heroImages.length;
+  fadeToHeroBg(heroIndex);
+}, 5000);
 </script>
 </body>
 </html>
