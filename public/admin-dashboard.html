@@ -17,9 +17,19 @@
                         <div class="logo-circle">N</div>
                         <div class="logo-circle">T</div>
                     </div>
-                    <h1 class="dashboard-title">Admin Dashboard</h1>
+                    <h1 class="dashboard-title">Dashboard</h1>
                 </div>
-                <button id="logoutBtn" class="btn btn-danger">Logout</button>
+                <button id="logoutBtn" class="btn btn-danger">
+                    <span class="logout-desktop">Logout</span>
+                    <span class="logout-mobile" style="display:none;">
+                        <!-- Logout SVG icon -->
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M16 17L21 12L16 7" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          <path d="M21 12H9" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          <path d="M12 19C7.58172 19 4 15.4183 4 11C4 6.58172 7.58172 3 12 3" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                </button>
             </div>
         </header>
 
@@ -90,11 +100,27 @@
                                 required
                             >
                             <button type="button" id="generateTrackingBtn" class="btn btn-secondary">
-  <span class="btn-icon" aria-label="Generate">
-    <!-- Refresh SVG icon -->
-    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style="vertical-align:middle;" xmlns="http://www.w3.org/2000/svg">
-      <path d="M11 2v2.5M11 19.5V17M4.22 4.22l1.77 1.77M16.01 16.01l1.77 1.77M2 11h2.5M19.5 11H17M4.22 17.78l1.77-1.77M16.01 5.99l1.77-1.77M7 11a4 4 0 1 1 8 0 4 4 0 0 1-8 0z" stroke="#333" stroke-width="1.5" stroke-linecap="round"/>
-    </svg>
+  <span class="btn-icon" aria-label="Generate Automatically">
+    <!-- Desktop SVG icon (hidden on mobile) -->
+    <span class="icon-desktop">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" style="vertical-align:middle;" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="recycleGreen" x1="0" y1="0" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#43e97b"/>
+      <stop offset="1" stop-color="#38f9d7"/>
+    </linearGradient>
+  </defs>
+  <circle cx="11" cy="11" r="9" stroke="url(#recycleGreen)" stroke-width="2.5" fill="none"/>
+  <path d="M6.5 7.5l-2.5 1.5 1.5 2.5" fill="none" stroke="url(#recycleGreen)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M15.5 14.5l2.5-1.5-1.5-2.5" fill="none" stroke="url(#recycleGreen)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M4.5 9A7 7 0 0 1 11 4" fill="none" stroke="url(#recycleGreen)" stroke-width="2" stroke-linecap="round"/>
+  <path d="M17.5 13A7 7 0 0 1 11 18" fill="none" stroke="url(#recycleGreen)" stroke-width="2" stroke-linecap="round"/>
+</svg>
+    </span>
+    <!-- Mobile image icon (hidden on desktop) -->
+    <span class="icon-mobile" style="display:none;">
+      <img src="rec.jpg" alt="Generate" style="width:22px;height:22px;vertical-align:middle;">
+    </span>
   </span>
   <span class="btn-text">Generate</span>
 </button>
@@ -588,5 +614,20 @@
 
     <script src="admin-dashboard.js"></script>
   
+    <style>
+/* Add this style block at the end of your <head> or in your CSS file */
+@media (max-width: 600px) {
+  .icon-desktop { display: none !important; }
+  .icon-mobile { display: inline !important; }
+  .logout-desktop { display: none !important; }
+  .logout-mobile { display: inline !important; }
+}
+@media (min-width: 601px) {
+  .icon-desktop { display: inline !important; }
+  .icon-mobile { display: none !important; }
+  .logout-desktop { display: inline !important; }
+  .logout-mobile { display: none !important; }
+}
+</style>
 </body>
 </html>

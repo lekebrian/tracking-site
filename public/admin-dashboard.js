@@ -521,47 +521,38 @@ document.addEventListener("DOMContentLoaded", () => {
       trackingIdInput.dispatchEvent(new Event("input")); // trigger validation if any
     });
   }
-})
 
-// tracking\public\admin-dashboard.js
-const copyBtn = document.getElementById("copyTrackingBtn");
-const copyIcon = document.getElementById("copyIcon");
-const trackingIdInput = document.getElementById("trackingId");
+  // Copy Tracking ID to clipboard (desktop & mobile)
+  const copyBtn = document.getElementById('copyTrackingBtn');
+  // trackingIdInput is already defined above
+  if (copyBtn && trackingIdInput) {
+    copyBtn.addEventListener('click', function () {
+      const value = trackingIdInput.value;
+      if (!value) return;
+      // Try Clipboard API first
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(value).then(function() {
+          showCopyPopup("Copied!");
+        }, fallbackCopy);
+      } else {
+        fallbackCopy();
+      }
+      function fallbackCopy() {
+        trackingIdInput.select();
+        trackingIdInput.setSelectionRange(0, 99999); // For mobile
+        try {
+          document.execCommand('copy');
+          showCopyPopup("Copied!");
+        } catch (e) {
+          alert('Failed to copy tracking number.');
+        }
+        window.getSelection().removeAllRanges();
+      }
+    });
+  }
+});
 
-const clipboardSVG = `
-<svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="vertical-align:middle;" xmlns="http://www.w3.org/2000/svg">
-  <rect x="5" y="3" width="10" height="14" rx="2" stroke="#333" stroke-width="1.5" fill="none"/>
-  <rect x="7" y="1" width="6" height="4" rx="1" stroke="#333" stroke-width="1.5" fill="none"/>
-</svg>
-`;
-
-const checkSVG = `
-<svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="vertical-align:middle;" xmlns="http://www.w3.org/2000/svg">
-  <circle cx="10" cy="10" r="10" fill="#4BB543"/>
-  <path d="M6 10.5L9 13.5L14 8.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-`;
-
-if (copyBtn && trackingIdInput && copyIcon) {
-  copyBtn.addEventListener("click", async () => {
-    try {
-      await navigator.clipboard.writeText(trackingIdInput.value);
-      copyIcon.innerHTML = checkSVG; // Show checkmark on success
-
-      // Show a popup notification
-      showCopyPopup("Copied!");
-
-      setTimeout(() => {
-        copyIcon.innerHTML = clipboardSVG; // Restore clipboard icon
-      }, 1500);
-    } catch (err) {
-      copyIcon.innerHTML = clipboardSVG;
-      alert("Failed to copy!");
-    }
-  });
-}
-
-// Add this function at the end of your file
+// Add this function at the end of your file (if not already present)
 function showCopyPopup(message) {
   let popup = document.createElement("div");
   popup.textContent = message;
