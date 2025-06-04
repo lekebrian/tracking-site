@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - TNT Logistics</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="admin-dashboard">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="logo">
+                        <div class="logo-circle">T</div>
+                        <div class="logo-circle">N</div>
+                        <div class="logo-circle">T</div>
+                    </div>
+                    <h1 class="dashboard-title">Admin Dashboard</h1>
+                </div>
+                <button id="logoutBtn" class="btn btn-danger">Logout</button>
+            </div>
+        </header>
+
+        <div class="dashboard-content">
+            <!-- Tabs -->
+            <div class="tabs">
+                <div class="tab-list">
+                    <button class="tab-button active" data-tab="shipments">
+                        All Shipments (<span id="shipmentCount">0</span>)
+                    </button>
+                    <button class="tab-button" data-tab="create">
+                        Create New
+                    </button>
+                </div>
+
+                <!-- Shipments Tab -->
+                <div id="shipmentsTab" class="tab-content active">
+                    <div id="shipmentsContainer" class="shipments-container">
+                        <div id="loadingSpinner" class="loading-container">
+                            <span class="spinner"></span>
+                            <span>Loading shipments...</span>
+                        </div>
+                        
+                        <div id="noShipments" class="no-shipments" style="display: none;">
+                            <div class="no-shipments-icon">📦</div>
+                            <h3>No shipments yet</h3>
+                            <p>Create your first shipment to get started.</p>
+                        </div>
+                        
+                        <div id="shipmentsList" class="shipments-list"></div>
+                    </div>
+                </div>
+
+                <!-- Create Tab -->
+                <div id="createTab" class="tab-content">
+    <div class="create-card">
+        <div class="card-header">
+            <h2 class="card-title">
+                <span class="plus-icon">➕</span>
+                Create New Shipment
+            </h2>
+        </div>
+        
+        <div class="card-content">
+            <form id="createForm" class="create-form">
+                <div class="form-section">
+                    <h3 class="section-title">Tracking Information</h3>
+                    <div class="form-group">
+                        <label for="trackingId" class="form-label">Tracking ID (15 characters)</label>
+                        <div class="input-group">
+                            <input 
+                                type="text" 
+                                id="trackingId" 
+                                name="trackingId"
+                                class="form-control" 
+                                placeholder="Enter or generate tracking ID"
+                                maxlength="15"
+                                required
+                            >
+                            <button type="button" id="generateTrackingBtn" class="btn btn-secondary">Generate</button>
+                            <button type="button" id="copyTrackingBtn" class="btn btn-secondary" title="Copy Tracking ID">
+  <span id="copyIcon">
+    <!-- Cody/Copilot clipboard SVG icon -->
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style="vertical-align:middle;" xmlns="http://www.w3.org/2000/svg">
+      <rect x="5" y="3" width="10" height="14" rx="2" stroke="#333" stroke-width="1.5" fill="none"/>
+      <rect x="7" y="1" width="6" height="4" rx="1" stroke="#333" stroke-width="1.5" fill="none"/>
+    </svg>
+  </span>
+</button>
+                        </div>
+                    </div>
+                    <!-- Add this inside your <form id="createForm">, e.g. after Tracking ID section -->
+<div class="form-group">
+    <label for="description" class="form-label">Description</label>
+    <textarea id="description" class="form-control" rows="2" required></textarea>
+</div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title">Sender Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="senderName" class="form-label">Sender Name</label>
+                            <input type="text" id="senderName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="senderLocation" class="form-label">Sender Location</label>
+                            <input type="text" id="senderLocation" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="senderEmail" class="form-label">Sender Email</label>
+                            <input type="email" id="senderEmail" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="senderPhone" class="form-label">Sender Phone Number</label>
+                            <input type="tel" id="senderPhone" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title">Receiver Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="receiverName" class="form-label">Receiver Name</label>
+                            <input type="text" id="receiverName" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="receiverAddress" class="form-label">Receiver Address</label>
+                            <input type="text" id="receiverAddress" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="receiverEmail" class="form-label">Receiver Email</label>
+                            <input type="email" id="receiverEmail" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="receiverPhone" class="form-label">Receiver Phone Number</label>
+                            <input type="tel" id="receiverPhone" class="form-control" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title">Shipment Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="origin" class="form-label">Origin</label>
+                            <input type="text" id="origin" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="destination" class="form-label">Destination</label>
+                            <input type="text" id="destination" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="status" class="form-label">Status</label>
+                            <select id="status" class="form-control" required>
+                                <option value="Pending">Pending</option>
+                                <option value="In Transit">In Transit</option>
+                                <option value="On Hold">On Hold</option>
+                                <option value="Delivered">Delivered</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="carrier" class="form-label">Carrier</label>
+                            <select id="carrier" class="form-control" required>
+                                <option value="FedEx">FedEx</option>
+                                <option value="DHL">DHL</option>
+                                <option value="USPS">USPS</option>
+                                <option value="UPS">UPS</option>
+                                <option value="TNT">TNT</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="shipmentType" class="form-label">Type of Shipment</label>
+                            <select id="shipmentType" class="form-control" required>
+                                <option value="Air Freight">Air Freight</option>
+                                <option value="Sea Freight">Sea Freight</option>
+                                <option value="Road Freight">Road Freight</option>
+                                <option value="Rail Freight">Rail Freight</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="shipmentMode" class="form-label">Shipment Mode</label>
+                            <select id="shipmentMode" class="form-control" required>
+                                <option value="Air Freight">Air Freight</option>
+                                <option value="Express">Express</option>
+                                <option value="Standard">Standard</option>
+                                <option value="Economy">Economy</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="weight" class="form-label">Weight (kg)</label>
+                            <input type="number" id="weight" class="form-control" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="numberOfBoxes" class="form-label">Number of Boxes</label>
+                            <input type="number" id="numberOfBoxes" class="form-control" min="1" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="carrierRefNumber" class="form-label">Carrier Reference Number</label>
+                            <input type="text" id="carrierRefNumber" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="productName" class="form-label">Product Name</label>
+                            <input type="text" id="productName" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="quantity" class="form-label">Quantity</label>
+                            <input type="number" id="quantity" class="form-control" min="1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="totalFreight" class="form-label">Total Freight ($)</label>
+                            <input type="number" id="totalFreight" class="form-control" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="expectedDeliveryDate" class="form-label">Expected Delivery Date</label>
+                            <input type="date" id="expectedDeliveryDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="departureTime" class="form-label">Departure Time</label>
+                            <input type="time" id="departureTime" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="pickUpDate" class="form-label">Pick Up Date</label>
+                            <input type="date" id="pickUpDate" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="pickUpTime" class="form-label">Pick Up Time</label>
+                            <input type="time" id="pickUpTime" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="comments" class="form-label">Comments</label>
+                        <textarea id="comments" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title">Packages</h3>
+                    <div id="packagesContainer">
+                        <div class="package-item">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">Quantity</label>
+                                    <input type="number" class="form-control package-quantity" min="1" required>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Piece Type</label>
+                                    <select class="form-control package-piece-type" required>
+                                        <option value="Loose">Loose</option>
+                                        <option value="Pallet">Pallet</option>
+                                        <option value="Box">Box</option>
+                                        <option value="Crate">Crate</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Description</label>
+                                    <input type="text" class="form-control package-description" required>
+                                </div>
+                                <div class="form-group package-actions">
+                                    <button type="button" class="btn btn-danger remove-package">Remove</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" id="addPackageBtn" class="btn btn-secondary">Add Package</button>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="section-title">Total Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="totalWeight" class="form-label">Total Weight (kg)</label>
+                            <input type="number" id="totalWeight" class="form-control" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="totalVolumetricWeight" class="form-label">Total Volumetric Weight (kg)</label>
+                            <input type="number" id="totalVolumetricWeight" class="form-control" step="0.01" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="totalVolume" class="form-label">Total Volume (m³)</label>
+                            <input type="number" id="totalVolume" class="form-control" step="0.001" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="totalActualWeight" class="form-label">Total Actual Weight (kg)</label>
+                            <input type="number" id="totalActualWeight" class="form-control" step="0.01" required>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-create" id="createBtn">
+                    <span class="btn-text">
+                        <span class="plus-icon">➕</span>
+                        Create Shipment
+                    </span>
+                    <span class="btn-loading" style="display: none;">
+                        <span class="spinner"></span>
+                        Creating...
+                    </span>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title">Edit Shipment <span id="editShipmentId"></span></h3>
+            <button class="modal-close" id="closeModal">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+            <form id="editForm" class="edit-form">
+                <div class="form-tabs">
+                    <div class="tab-list">
+                        <button type="button" class="tab-button edit-tab-button active" data-tab="basic">Basic Info</button>
+                        <button type="button" class="tab-button edit-tab-button" data-tab="sender">Sender</button>
+                        <button type="button" class="tab-button edit-tab-button" data-tab="receiver">Receiver</button>
+                        <button type="button" class="tab-button edit-tab-button" data-tab="shipment">Shipment</button>
+                        <button type="button" class="tab-button edit-tab-button" data-tab="packages">Packages</button>
+                        <button type="button" class="tab-button edit-tab-button" data-tab="totals">Totals</button>
+                        <button type="button" class="tab-button edit-tab-button" data-tab="history">History</button>
+                    </div>
+                    
+                    <!-- Basic Info Tab -->
+                    <div id="basicTab" class="edit-tab-content active">
+                        <div class="form-group">
+                            <label for="editDescription" class="form-label">Description</label>
+                            <textarea id="editDescription" class="form-control" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="editStatus" class="form-label">Status</label>
+                            <select id="editStatus" class="form-control">
+                                <option value="Pending">Pending</option>
+                                <option value="In Transit">In Transit</option>
+                                <option value="On Hold">On Hold</option>
+                                <option value="Delivered">Delivered</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Sender Tab -->
+                    <div id="senderTab" class="edit-tab-content">
+                        <div class="form-group">
+                            <label for="editSenderName" class="form-label">Sender Name</label>
+                            <input type="text" id="editSenderName" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="editSenderLocation" class="form-label">Sender Location</label>
+                            <input type="text" id="editSenderLocation" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="editSenderEmail" class="form-label">Sender Email</label>
+                            <input type="email" id="editSenderEmail" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="editSenderPhone" class="form-label">Sender Phone</label>
+                            <input type="tel" id="editSenderPhone" class="form-control">
+                        </div>
+                    </div>
+                    
+                    <!-- Receiver Tab -->
+                    <div id="receiverTab" class="edit-tab-content">
+                        <div class="form-group">
+                            <label for="editReceiverName" class="form-label">Receiver Name</label>
+                            <input type="text" id="editReceiverName" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="editReceiverAddress" class="form-label">Receiver Address</label>
+                            <input type="text" id="editReceiverAddress" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="editReceiverEmail" class="form-label">Receiver Email</label>
+                            <input type="email" id="editReceiverEmail" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="editReceiverPhone" class="form-label">Receiver Phone</label>
+                            <input type="tel" id="editReceiverPhone" class="form-control">
+                        </div>
+                    </div>
+                    
+                    <!-- Shipment Tab -->
+                    <div id="shipmentTab" class="edit-tab-content">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="editOrigin" class="form-label">Origin</label>
+                                <input type="text" id="editOrigin" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="editDestination" class="form-label">Destination</label>
+                                <input type="text" id="editDestination" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="editCarrier" class="form-label">Carrier</label>
+                                <select id="editCarrier" class="form-control">
+                                    <option value="FedEx">FedEx</option>
+                                    <option value="DHL">DHL</option>
+                                    <option value="USPS">USPS</option>
+                                    <option value="UPS">UPS</option>
+                                    <option value="TNT">TNT</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="editShipmentType" class="form-label">Type of Shipment</label>
+                                <select id="editShipmentType" class="form-control">
+                                    <option value="Air Freight">Air Freight</option>
+                                    <option value="Sea Freight">Sea Freight</option>
+                                    <option value="Road Freight">Road Freight</option>
+                                    <option value="Rail Freight">Rail Freight</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="editWeight" class="form-label">Weight (kg)</label>
+                                <input type="number" id="editWeight" class="form-control" step="0.01">
+                            </div>
+                            <div class="form-group">
+                                <label for="editNumberOfBoxes" class="form-label">Number of Boxes</label>
+                                <input type="number" id="editNumberOfBoxes" class="form-control" min="1">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="editExpectedDeliveryDate" class="form-label">Expected Delivery Date</label>
+                                <input type="date" id="editExpectedDeliveryDate" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="editComments" class="form-label">Comments</label>
+                                <textarea id="editComments" class="form-control" rows="2"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Packages Tab -->
+                    <div id="packagesTab" class="edit-tab-content">
+                        <div id="editPackagesContainer">
+                            <!-- Packages will be added here dynamically -->
+                        </div>
+                        <button type="button" id="editAddPackageBtn" class="btn btn-secondary">Add Package</button>
+                    </div>
+                    
+                    <!-- Totals Tab -->
+                    <div id="totalsTab" class="edit-tab-content">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="editTotalWeight" class="form-label">Total Weight (kg)</label>
+                                <input type="number" id="editTotalWeight" class="form-control" step="0.01">
+                            </div>
+                            <div class="form-group">
+                                <label for="editTotalVolumetricWeight" class="form-label">Total Volumetric Weight (kg)</label>
+                                <input type="number" id="editTotalVolumetricWeight" class="form-control" step="0.01">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="editTotalVolume" class="form-label">Total Volume (m³)</label>
+                                <input type="number" id="editTotalVolume" class="form-control" step="0.001">
+                            </div>
+                            <div class="form-group">
+                                <label for="editTotalActualWeight" class="form-label">Total Actual Weight (kg)</label>
+                                <input type="number" id="editTotalActualWeight" class="form-control" step="0.01">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- History Tab -->
+                    <div id="historyTab" class="edit-tab-content">
+                        <div id="shipmentHistoryContainer">
+                            <!-- History entries will be added here dynamically -->
+                        </div>
+                        <button type="button" id="addHistoryEntryBtn" class="btn btn-secondary">Add History Entry</button>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-update" id="updateBtn">
+                        <span class="btn-text">Update</span>
+                        <span class="btn-loading" style="display: none;">
+                            <span class="spinner"></span>
+                            Updating...
+                        </span>
+                    </button>
+                    <button type="button" class="btn btn-outline" id="cancelEdit">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- History Entry Modal -->
+<div id="historyEntryModal" class="modal" style="display: none;">
+    <div class="modal-content modal-sm">
+        <div class="modal-header">
+            <h3 class="modal-title">Add History Entry</h3>
+            <button class="modal-close" id="closeHistoryModal">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+            <form id="historyEntryForm">
+                <div class="form-group">
+                    <label for="historyDate" class="form-label">Date</label>
+                    <input type="date" id="historyDate" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="historyTime" class="form-label">Time</label>
+                    <input type="time" id="historyTime" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="historyLocation" class="form-label">Location</label>
+                    <input type="text" id="historyLocation" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="historyStatus" class="form-label">Status</label>
+                    <select id="historyStatus" class="form-control" required>
+                        <option value="Pending">Pending</option>
+                        <option value="In Transit">In Transit</option>
+                        <option value="On Hold">On Hold</option>
+                        <option value="Delivered">Delivered</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="historyUpdatedBy" class="form-label">Updated By</label>
+                    <input type="text" id="historyUpdatedBy" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="historyRemarks" class="form-label">Remarks</label>
+                    <textarea id="historyRemarks" class="form-control" rows="2"></textarea>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-update">Add Entry</button>
+                    <button type="button" class="btn btn-outline" id="cancelHistoryEntry">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+    <script src="admin-dashboard.js"></script>
+  
+</body>
+</html>

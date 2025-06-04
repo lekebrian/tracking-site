@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TNT Logistics & Tracking</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+             .reviews-header {
+            margin-bottom: 60px;
+        }
+
+        .platform-review {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .platform-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .yelp-icon {
+            background-color: #d32323;
+        }
+        .img{
+            border-radius: 50%;
+            height: 100%;
+            width: 100%;
+        }
+
+        .google-icon {
+            background-color: #4285F4;
+        }
+
+        .platform-info h4 {
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .review-card {
+            background-color: #f9f9f9;
+            padding: 30px;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .reviewer-img {
+            width: 83px;
+            height: 83px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            background-color: #eee;
+        }
+
+        .stars {
+            color: #ff6b35;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .reviewer-name {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .reviewer-title {
+            color: #ff6b35;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .review-text {
+            color: #666;
+        }
+            .icon {
+            display: inline-block;
+            text-align: center;
+        }
+
+        .icon-truck:before { content: "🚚"; }
+        .icon-plane:before { content: "✈️"; }
+        .icon-ship:before { content: "🚢"; }
+        .icon-award:before { content: "🏆"; }
+        .icon-check:before { content: "✓"; }
+        .icon-users:before { content: "👥"; }
+        .icon-clock:before { content: "🕒"; }
+        .icon-phone:before { content: "📞"; }
+        .icon-shield:before { content: "🛡️"; }
+        .icon-star:before { content: "★"; }
+        .icon-globe:before { content: "🌎"; }
+        .icon-package:before { content: "📦"; }
+        .icon-warehouse:before { content: "🏭"; }
+        /* Base wow animation */
+.wow {
+  opacity: 0;
+  transition: all 1.2s cubic-bezier(.19,1,.22,1);
+  will-change: opacity, transform;
+}
+
+/* Slide in from bottom */
+.wow.slide-up {
+  transform: translateY(60px);
+}
+.wow.animated.slide-up {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Slide in from left */
+.wow.slide-left {
+  transform: translateX(-60px);
+}
+.wow.animated.slide-left {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Slide in from right */
+.wow.slide-right {
+  transform: translateX(60px);
+}
+.wow.animated.slide-right {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Fade in (default) */
+.wow.fade-in {
+  transform: none;
+}
+.wow.animated.fade-in {
+  opacity: 1;
+  transform: none;
+}
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-container">
+            <div class="logo">
+                <div class="logo-circle">T</div>
+                <div class="logo-circle">N</div>
+                <div class="logo-circle">T</div>
+            </div>
+            
+            <nav class="nav">
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#track">Track Shipment</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            
+            <a href="admin-login.html" class="btn">ADMIN LOGIN</a>
+            
+            <button class="mobile-menu-btn">☰</button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">A Global Freight<br><span style="color: #ff6b35;">& Logistics Network</span></h1>
+            <p class="hero-subtitle">Take the complexity out of custom freight solutions with customs brokerage services.</p>
+            <a href="#track" class="btn hero-btn">TRACK SHIPMENT →</a>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="section stats">
+        <div class="container">
+            <div class="row">
+                <div class="col col-sm-6 col-md-4 col-lg-3">
+                    <div class="stat-card wow slide-up" data-wow="fade-in">
+  <div class="stat-number" data-count="15" data-plus="+">0</div>
+  <div class="stat-label">Years in Business</div>
+</div>
+                </div>
+                <div class="col col-sm-6 col-md-4 col-lg-3">
+                    <div class="stat-card stat-card-light wow slide-up" data-wow="fade-in">
+  <div class="stat-number" data-count="1500">0</div>
+  <div class="stat-label">Happy Clients</div>
+</div>
+                </div>
+                <div class="col col-sm-6 col-md-4 col-lg-3">
+                    <div class="stat-card stat-card-dark wow slide-up" data-wow="fade-in">
+  <div class="stat-number" data-count="500">0</div>
+  <div class="stat-label">Shipments Delivered</div>
+</div>
+                </div>
+                <div class="col col-sm-6 col-md-4 col-lg-3">
+                    <div class="stat-card stat-card-orange wow slide-up" data-wow="fade-in">
+  <div class="stat-number" data-count="150" data-plus="+">0</div>
+  <div class="stat-label">Countries</div>
+</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tracking Section -->
+    <section id="track" class="section tracking-section">
+        <div class="container">
+            <div class="tracking-container">
+                <div class="text-center mb-6">
+                    <div class="badge">Track Your Shipment</div>
+                    <h2 class="section-title">Real-Time Package Tracking</h2>
+                    <p class="section-subtitle">Enter your 9-character tracking ID to get real-time updates on your shipment status.</p>
+                </div>
+                
+                <div class="tracking-form-container">
+                    <form id="trackingForm" class="tracking-form">
+                        <div class="form-group">
+                            <input 
+                                type="text" 
+                                id="trackingId" 
+                                class="form-control tracking-input" 
+                                placeholder="Enter 9-character tracking ID (e.g., ABC123XYZ)"
+                                maxlength="15"
+                                required
+                            >
+                        </div>
+                        <button id="trackBtn" class="btn btn-track">
+                            <span class="btn-text">Track Package</span>
+                            <span class="btn-loading" style="display: none;">
+                                <span class="spinner"></span>
+                                Tracking...
+                            </span>
+                        </button>
+                    </form>
+
+                    <!-- Error Message -->
+                    <div id="errorMessage" class="error-message" style="display: none;">
+                        <span class="error-icon">❌</span>
+                        <span class="error-text"></span>
+                    </div>
+
+                    <!-- Tracking Result -->
+                    <div id="trackingResult" class="tracking-result" style="display: none;">
+                        <div class="result-header">
+                            <h3 class="result-title">Tracking ID: <span id="resultId"></span></h3>
+                            <div class="status-badge" id="statusBadge">
+                                <span class="status-icon" id="statusIcon"></span>
+                                <span class="status-text" id="statusText"></span>
+                            </div>
+                        </div>
+
+                        <div class="result-tabs">
+                            <div class="result-tab-list">
+                                <button class="result-tab-button active" data-tab="overview">Overview</button>
+                                <button class="result-tab-button" data-tab="details">Details</button>
+                                <button class="result-tab-button" data-tab="packages">Packages</button>
+                                <button class="result-tab-button" data-tab="history">History</button>
+                            </div>
+
+                            <!-- Overview Tab -->
+                            <div id="overviewTab" class="result-tab-content active">
+                                <div class="result-section">
+                                    <h4 class="result-section-title">Shipment Information</h4>
+                                    <div class="result-details">
+                                        <div class="detail-item">
+                                            <span class="detail-label">Description:</span>
+                                            <span class="detail-value" id="resultDescription"></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Origin:</span>
+                                            <span class="detail-value" id="resultOrigin"></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Destination:</span>
+                                            <span class="detail-value" id="resultDestination"></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Carrier:</span>
+                                            <span class="detail-value" id="resultCarrier"></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Expected Delivery:</span>
+                                            <span class="detail-value" id="resultExpectedDelivery"></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Last Updated:</span>
+                                            <span class="detail-value" id="resultUpdated"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Status Timeline -->
+                                <div class="status-timeline">
+                                    <h4>Shipment Progress</h4>
+                                    <div class="timeline-container">
+                                        <div class="timeline-item" data-status="Pending">
+                                            <div class="timeline-icon">📦</div>
+                                            <div class="timeline-label">Pending</div>
+                                        </div>
+                                        <div class="timeline-item" data-status="In Transit">
+                                            <div class="timeline-icon">🚚</div>
+                                            <div class="timeline-label">In Transit</div>
+                                        </div>
+                                        <div class="timeline-item" data-status="On Hold">
+                                            <div class="timeline-icon">⏸️</div>
+                                            <div class="timeline-label">On Hold</div>
+                                        </div>
+                                        <div class="timeline-item" data-status="Delivered">
+                                            <div class="timeline-icon">✅</div>
+                                            <div class="timeline-label">Delivered</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Details Tab -->
+                            <div id="detailsTab" class="result-tab-content">
+                                <div class="result-section">
+                                    <h4 class="result-section-title">Sender Information</h4>
+                                    <div class="result-details">
+                                        <div class="detail-item">
+                                            <span class="detail-label">Name:</span>
+                                            <span class="detail-value" id="resultSenderName"></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Location:</span>
+                                            <span class="detail-value" id="resultSenderLocation"></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Email:</span>
+                                            <span class="detail-value" id="resultSenderEmail"></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Phone:</span>
+                                            <span class="detail-value" id="resultSenderPhone"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="result-section">
+                                    <h4 class="result-section-title">Receiver Information</h4>
+                                    <div class="result-details">
+                                        <div class="detail-item">
+                                            <span class="detail-label">Name:</span>
+                                            <span class="detail-value" id="resultReceiverName"></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Address:</span>
+                                            <span class="detail-value" id="resultReceiverAddress"></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Email:</span>
+                                            <span class="detail-value" id="resultReceiverEmail"></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Phone:</span>
+                                            <span class="detail-value" id="resultReceiverPhone"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="result-section">
+                                    <h4 class="result-section-title">Shipment Details</h4>
+                                    <div class="result-details">
+                                        <div class="detail-item">
+                                            <span class="detail-label">Type:</span>
+                                            <span class="detail-value" id="resultShipmentType"></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Mode:</span>
+                                            <span class="detail-value" id="resultShipmentMode"></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Weight:</span>
+                                            <span class="detail-value" id="resultWeight"></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Number of Boxes:</span>
+                                            <span class="detail-value" id="resultNumberOfBoxes"></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Carrier Reference:</span>
+                                            <span class="detail-value" id="resultCarrierRef"></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Product:</span>
+                                            <span class="detail-value" id="resultProduct"></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Quantity:</span>
+                                            <span class="detail-value" id="resultQuantity"></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Total Freight:</span>
+                                            <span class="detail-value" id="resultTotalFreight"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="result-section">
+                                    <h4 class="result-section-title">Dates & Times</h4>
+                                    <div class="result-details">
+                                        <div class="detail-item">
+                                            <span class="detail-label">Expected Delivery:</span>
+                                            <span class="detail-value" id="resultExpectedDeliveryFull"></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Departure Time:</span>
+                                            <span class="detail-value" id="resultDepartureTime"></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Pick Up Date:</span>
+                                            <span class="detail-value" id="resultPickUpDate"></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Pick Up Time:</span>
+                                            <span class="detail-value" id="resultPickUpTime"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="result-section">
+                                    <h4 class="result-section-title">Total Information</h4>
+                                    <div class="result-details">
+                                        <div class="detail-item">
+                                            <span class="detail-label">Total Weight:</span>
+                                            <span class="detail-value" id="resultTotalWeight"></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Total Volumetric Weight:</span>
+                                            <span class="detail-value" id="resultTotalVolumetricWeight"></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Total Volume:</span>
+                                            <span class="detail-value" id="resultTotalVolume"></span>
+                                        </div>
+                                        <div class="detail-item">
+                                            <span class="detail-label">Total Actual Weight:</span>
+                                            <span class="detail-value" id="resultTotalActualWeight"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="result-section">
+                                    <h4 class="result-section-title">Comments</h4>
+                                    <div class="result-comments" id="resultComments"></div>
+                                </div>
+                            </div>
+
+                            <!-- Packages Tab -->
+                            <div id="packagesTab" class="result-tab-content">
+                                <div class="result-section">
+                                    <h4 class="result-section-title">Package Information</h4>
+                                    <div class="packages-table-container">
+                                        <table class="packages-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Quantity</th>
+                                                    <th>Piece Type</th>
+                                                    <th>Description</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="packagesTableBody">
+                                                <!-- Packages will be added here dynamically -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- History Tab -->
+                            <div id="historyTab" class="result-tab-content">
+                                <div class="result-section">
+                                    <h4 class="result-section-title">Shipment History</h4>
+                                    <div class="history-timeline" id="historyTimeline">
+                                        <!-- History entries will be added here dynamically -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col col-md-6">
+                    <div style="background-image: url(man.jpg); background-repeat: no-repeat; background-position: center; background-size: cover;" class="about-img-placeholder">
+                       
+                    </div>
+                </div>
+                <div class="col col-md-6">
+                    <div class="about-content wow fade-in" data-wow="fade-in">
+                        <div class="badge">About Company</div>
+                        <h2 class="about-title">Professional Logistics Company</h2>
+                        <p class="about-text">
+                            TNT is the leading provider of eCommerce delivery management technology to enterprise retailers and brands. Our platform integrates over 350 carriers and 4,000 delivery services.
+                        </p>
+                        <p class="about-text">
+                            For each and every order, TNT is able to identify the most appropriate delivery service for that particular customer, providing a seamless and personalized delivery experience.
+                        </p>
+                        <div class="certified">
+                            <span class="certified-icon">✓</span>
+                            <span>Certified Company</span>
+                        </div>
+                        <a href="#" class="btn">READ MORE</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="section services">
+        <div class="container">
+            <div class="text-center mb-6">
+                <div class="badge">Our Services</div>
+                <h2 style="color: #fff;" class="section-title text-white">We Provide Superior Shipping Services</h2>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-4">
+                    <div class="service-card wow slide-left" data-wow="slide-left">
+                        <div class="service-img">
+                           <img src="truck.jpg">
+                        </div>
+                        <div class="service-content">
+                            <h3 class="service-title">Ground Shipping</h3>
+                            <p class="service-text">
+                                We have wide experience in overland industry specific logistic solutions like pharmaceutical logistics, retail and automotive logistics by train or road.
+                            </p>
+                            <a href="#" class="btn btn-outline">Read More</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col col-md-4">
+                    <div class="service-card wow slide-left" data-wow="slide-left">
+                        <div class="service-img">
+                            <img src="plane.jpg">
+                        </div>
+                        <div class="service-content">
+                            <h3 class="service-title">International Air Freight</h3>
+                            <p class="service-text">
+                                We provide full supply chain management package including cost effective and fast sea freight. You can also combine this package with other means of transportation.
+                            </p>
+                            <a href="#" class="btn btn-outline">Read More</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col col-md-4">
+                    <div class="service-card wow slide-left" data-wow="slide-left">
+                        <div class="service-img">
+                           <img src="largetruck.jpg">
+                        </div>
+                        <div class="service-content">
+                            <h3 class="service-title">Large Projects</h3>
+                            <p class="service-text">
+                                We bring your goods safely to worldwide destinations with our great sea freight services. We offer LCL and FCL shipments that are fast and effective.
+                            </p>
+                            <a href="#" class="btn btn-outline">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+      <!-- Customer Reviews -->
+    <section class="section">
+        <div class="container">
+            <div class="reviews-header">
+                <div class="row">
+                    <div class="col col-md-6">
+                        <h3 class="mb-2" style="color: #ff6b35; font-weight: 700; font-size: 24px;">We Are Business Who Cares, And It Shows</h3>
+                        <p style="color: #666;">OVER 540 "5 STARS" REVIEWS AND CLIMBING</p>
+                    </div>
+
+                    <div class="col col-md-6">
+                        <div class="row">
+                            <div class="col col-sm-6">
+                                <div class="platform-review">
+                                    <div class="platform-icon yelp-icon">yelp</div>
+                                    <div class="platform-info">
+                                        <h4>Rate Us on Yelp</h4>
+                                        <p>248 reviews</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col col-sm-6">
+                                <div class="platform-review">
+                                    <div class="platform-icon google-icon">G</div>
+                                    <div class="platform-info">
+                                        <h4>Rate Us on Google</h4>
+                                        <p>1,248 reviews</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mb-6">
+                <h2 class="section-title">People Say The Nicest Things</h2>
+                <p class="section-subtitle">Customer reviews on their experience with us..</p>
+            </div>
+
+            <div class="row">
+                <div class="col col-md-4">
+                    <div class="review-card wow slide-right" data-wow="slide-right">
+                        <div class="reviewer-img"><img class="img" src="one.jpg"></div>
+                        <div class="stars">
+                            <span class="icon icon-star"></span>
+                            <span class="icon icon-star"></span>
+                            <span class="icon icon-star"></span>
+                            <span class="icon icon-star"></span>
+                            <span class="icon icon-star"></span>
+                        </div>
+                        <h4 class="reviewer-name">Jennifer Smith</h4>
+                        <p class="reviewer-title">CLIENT</p>
+                        <p class="review-text">"Been shipping with you over 5 years and it has been way better than shipping on UPS ground."</p>
+                    </div>
+                </div>
+
+                <div class="col col-md-4">
+                    <div class="review-card wow slide-right" data-wow="slide-right">
+                        <div class="reviewer-img"><img class="img" src="two.jpg"></div>
+                        <div class="stars">
+                            <span class="icon icon-star"></span>
+                            <span class="icon icon-star"></span>
+                            <span class="icon icon-star"></span>
+                            <span class="icon icon-star"></span>
+                            <span style="color: #ddd;">★</span>
+                        </div>
+                        <h4 class="reviewer-name">Pamela Duncan</h4>
+                        <p class="reviewer-title">DIRECTOR</p>
+                        <p class="review-text">"We have the best staff and offer over 5 prior shipping options all with freight solutions. We make it easier for your package to be shipped."</p>
+                    </div>
+                </div>
+
+                <div class="col col-md-4">
+                    <div class="review-card wow slide-right" data-wow="slide-right">
+                        <div class="reviewer-img"><img class="img" src="three.jpg"></div>
+                        <div class="stars">
+                            <span class="icon icon-star"></span>
+                            <span class="icon icon-star"></span>
+                            <span class="icon icon-star"></span>
+                            <span class="icon icon-star"></span>
+                            <span class="icon icon-star"></span>
+                        </div>
+                        <h4 class="reviewer-name">Steve Tailor</h4>
+                        <p class="reviewer-title">CFO</p>
+                        <p class="review-text">"Fast and Reliable service. TNT has consistently delivered our packages on time with excellent tracking capabilities."</p>
+                    </div>
+                </div>
+
+                <!-- Additional Reviews -->
+                <div class="col col-md-4">
+                    <div class="review-card wow slide-right" data-wow="slide-right">
+                        <div class="reviewer-img"><img class="img" src="four.jpg"></div>
+                        <div class="stars">
+                            <span class="icon icon-star"></span>
+                            <span class="icon icon-star"></span>
+                            <span class="icon icon-star"></span>
+                            <span class="icon icon-star"></span>
+                            <span class="icon icon-star"></span>
+                        </div>
+                        <h4 class="reviewer-name">Michael Rodriguez</h4>
+                        <p class="reviewer-title">OPERATIONS MANAGER</p>
+                        <p class="review-text">"Outstanding international shipping service. TNT handled our complex logistics requirements with professionalism and efficiency."</p>
+                    </div>
+                </div>
+
+                <div class="col col-md-4">
+                    <div class="review-card wow slide-right" data-wow="slide-right">
+                        <div class="reviewer-img"><img class="img" src="five.jpg"></div>
+                        <div class="stars">
+                            <span class="icon icon-star"></span>
+                            <span class="icon icon-star"></span>
+                            <span class="icon icon-star"></span>
+                            <span class="icon icon-star"></span>
+                            <span class="icon icon-star"></span>
+                        </div>
+                        <h4 class="reviewer-name">Sarah Chen</h4>
+                        <p class="reviewer-title">SUPPLY CHAIN DIRECTOR</p>
+                        <p class="review-text">"Exceptional customer service and real-time tracking. TNT has become our go-to logistics partner for all our shipping needs."</p>
+                    </div>
+                </div>
+
+                <div class="col col-md-4">
+                    <div class="review-card wow slide-right" data-wow="slide-right">
+                        <div class="reviewer-img"><img class="img" src="six.jpg"></div>
+                        <div class="stars">
+                            <span class="icon icon-star"></span>
+                            <span class="icon icon-star"></span>
+                            <span class="icon icon-star"></span>
+                            <span class="icon icon-star"></span>
+                            <span style="color: #ddd;">★</span>
+                        </div>
+                        <h4 class="reviewer-name">David Thompson</h4>
+                        <p class="reviewer-title">LOGISTICS COORDINATOR</p>
+                        <p class="review-text">"Reliable and cost-effective shipping solutions. The team at TNT always goes above and beyond to ensure our deliveries arrive safely."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col col-md-4">
+                    <h3 class="footer-title">Our Service</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#track">Track Shipment</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                    </ul>
+                </div>
+
+                <div class="col col-md-4">
+                    <h3 class="footer-title">Contact Us</h3>
+                    <p>info@tntpostalcourier.com</p>
+                </div>
+
+                <div class="col col-md-4">
+                    <div class="footer-logo">
+                        <div class="logo">
+                            <div class="logo-circle">T</div>
+                            <div class="logo-circle">N</div>
+                            <div class="logo-circle">T</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>Copyright © 2025 TNT Postal Courier</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+// WOW-like animation on scroll and load
+function animateOnScroll() {
+  const wowEls = document.querySelectorAll('.wow:not(.animated)');
+  const triggerBottom = window.innerHeight * 0.85;
+  wowEls.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < triggerBottom && rect.bottom > 0) {
+      el.classList.add('animated');
+    }
+  });
+}
+window.addEventListener('scroll', animateOnScroll);
+window.addEventListener('load', animateOnScroll);
+window.addEventListener('resize', animateOnScroll);
+
+// Animated number counter (only when visible)
+function animateCountersOnView() {
+  document.querySelectorAll('.stat-number[data-count]').forEach(el => {
+    if (el.dataset.animated) return; // Prevent re-animating
+    const rect = el.getBoundingClientRect();
+    const triggerBottom = window.innerHeight * 0.85;
+    if (rect.top < triggerBottom && rect.bottom > 0) {
+      el.dataset.animated = "true";
+      const target = +el.getAttribute('data-count');
+      const plus = el.getAttribute('data-plus') || '';
+      let current = 0;
+      const duration = 1200; // ms
+      const frameRate = 60;
+      const totalFrames = Math.round(duration / (1000 / frameRate));
+      let frame = 0;
+      function update() {
+        frame++;
+        current = Math.round(target * (frame / totalFrames));
+        if (frame >= totalFrames) {
+          el.textContent = target + plus;
+        } else {
+          el.textContent = current + plus;
+          requestAnimationFrame(update);
+        }
+      }
+      update();
+    }
+  });
+}
+window.addEventListener('scroll', animateCountersOnView);
+window.addEventListener('load', animateCountersOnView);
+window.addEventListener('resize', animateCountersOnView);
+</script>
+</body>
+</html>
