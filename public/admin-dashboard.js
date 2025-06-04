@@ -84,7 +84,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Global variables
   let shipments = []
+  let filteredShipments = []
   let editingShipmentId = null
+
+  // Search bar functionality
+  const adminSearchInput = document.getElementById("adminSearchInput")
+  const adminSearchBtn = document.getElementById("adminSearchBtn")
+  const adminClearSearchBtn = document.getElementById("adminClearSearchBtn")
+
+  if (adminSearchInput && adminSearchBtn && adminClearSearchBtn) {
+    // Make search interactive as admin types
+    adminSearchInput.addEventListener("input", handleAdminSearch)
+    adminSearchInput.addEventListener("keyup", (e) => {
+      if (e.key === "Enter") handleAdminSearch()
+    })
+    adminSearchBtn.addEventListener("click", handleAdminSearch)
+    adminClearSearchBtn.addEventListener("click", () => {
+      adminSearchInput.value = ""
+      filteredShipments = []
+      displayShipments()
+    })
+  }
+
+  function handleAdminSearch() {
+    const query = adminSearchInput.value.trim().toUpperCase()
+    if (!query) {
+      filteredShipments = []
+      displayShipments()
+      return
+    }
+    filteredShipments = shipments.filter(s => s.id.toUpperCase().includes(query))
+    displayShipments()
+  }
 
   // Initialize dashboard
   function initializeDashboard() {
@@ -129,19 +160,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Display shipments
+  // Display shipments (update to use filteredShipments if present)
   function displayShipments() {
     const shipmentsList = document.getElementById("shipmentsList")
     const noShipments = document.getElementById("noShipments")
+    const list = filteredShipments.length > 0 || adminSearchInput.value
+      ? filteredShipments
+      : shipments
 
-    if (shipments.length === 0) {
+    if (list.length === 0) {
       shipmentsList.innerHTML = ""
       noShipments.style.display = "block"
       return
     }
 
     noShipments.style.display = "none"
-    shipmentsList.innerHTML = shipments
+    shipmentsList.innerHTML = list
       .map(
         (shipment) => `
             <div class="shipment-card">

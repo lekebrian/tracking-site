@@ -24,6 +24,18 @@
         </header>
 
         <div class="dashboard-content">
+            <!-- Add search bar here -->
+            <div style="margin-bottom: 30px; display: flex; gap: 15px; align-items: center;">
+                <input
+                    type="text"
+                    id="adminSearchInput"
+                    class="form-control"
+                    placeholder="Search by Tracking ID..."
+                    style="max-width: 300px;"
+                />
+                <button id="adminSearchBtn" class="btn btn-secondary">Search</button>
+                <button id="adminClearSearchBtn" class="btn btn-outline">Clear</button>
+            </div>
             <!-- Tabs -->
             <div class="tabs">
                 <div class="tab-list">
