@@ -1,2 +1,3 @@
 node_modules
 tnt_tracking.sql
+.env
