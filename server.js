@@ -3,10 +3,12 @@ const cors = require("cors")
 const jwt = require("jsonwebtoken")
 const path = require("path")
 const mysql = require("mysql2/promise")
+const { sendShipmentEmail } = require('./mailer');
+require('dotenv').config();
 
 const app = express()
 const PORT = process.env.PORT || 3001
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-change-in-production"
+const JWT_SECRET = process.env.JWT_SECRET || "x a u t u o p v g t y t k d b g"
 
 // Middleware
 app.use(cors())
@@ -174,7 +176,7 @@ app.post("/api/admin/shipments", verifyToken, async (req, res) => {
   try {
     const s = req.body
     // Insert into shipments
-    await db.query(
+    const [result] = await db.query(
       `INSERT INTO shipments 
       (id, description, origin, destination, sender_name, sender_location, sender_email, sender_phone, receiver_name, receiver_address, receiver_email, receiver_phone, status, carrier, shipment_type, shipment_mode, weight, number_of_boxes, carrier_ref_number, product_name, quantity, total_freight, expected_delivery_date, departure_time, pick_up_date, pick_up_time, total_weight, total_volumetric_weight, total_volume, total_actual_weight, comments)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
@@ -185,6 +187,8 @@ app.post("/api/admin/shipments", verifyToken, async (req, res) => {
         s.departureTime, s.pickUpDate, s.pickUpTime, s.totalWeight, s.totalVolumetricWeight, s.totalVolume, s.totalActualWeight, s.comments
       ]
     )
+    const savedShipment = { id: s.id, ...s }; // Create a savedShipment object
+
     // Insert packages
     if (Array.isArray(s.packages)) {
       for (const pkg of s.packages) {
@@ -199,7 +203,23 @@ app.post("/api/admin/shipments", verifyToken, async (req, res) => {
       "INSERT INTO shipment_history (shipment_id, date, time, location, status, updated_by, remarks) VALUES (?, CURDATE(), CURTIME(), ?, ?, ?, ?)",
       [s.id, s.origin, s.status, req.user.username, "Shipment created"]
     )
-    res.status(201).json({ success: true })
+
+    // After saving, get receiver info from the saved shipment
+    const { receiverEmail, receiverName, id, origin } = savedShipment;
+    // Send email
+    try {
+      await sendShipmentEmail({
+        receiverEmail,
+        receiverName,
+        trackingId: id,
+        location: origin // or current location/status
+      });
+    } catch (err) {
+      console.error('Failed to send email:', err);
+      // Optionally, handle email failure (but don't block shipment creation)
+    }
+
+    res.status(201).json(savedShipment);
   } catch (error) {
     console.error("Create shipment error:", error)
     res.status(500).json({ error: "Internal server error" })
