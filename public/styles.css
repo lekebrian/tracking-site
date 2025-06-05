@@ -271,6 +271,54 @@ img {
   cursor: pointer;
 }
 
+/* Mobile nav dropdown */
+.mobile-nav-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  min-width: 180px;
+  z-index: 2000;
+  padding: 15px 0;
+  animation: fadeInNav 0.2s;
+}
+
+@keyframes fadeInNav {
+  from { opacity: 0; transform: translateY(-10px);}
+  to { opacity: 1; transform: translateY(0);}
+}
+
+.mobile-nav-dropdown ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.mobile-nav-dropdown li {
+  width: 100%;
+}
+
+.mobile-nav-dropdown a {
+  display: block;
+  padding: 12px 24px;
+  color: #333;
+  font-weight: 600;
+  border: none;
+  background: none;
+  text-align: left;
+  width: 100%;
+  transition: background 0.2s, color 0.2s;
+}
+
+.mobile-nav-dropdown a:hover {
+  background: #ff6b35;
+  color: #fff;
+  border-radius: 0;
+}
+
 /* Hero Section */
 .hero {
   position: relative;

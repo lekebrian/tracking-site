@@ -1,15 +1,34 @@
 // Main website JavaScript
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Mobile menu toggle
+  // Mobile menu dropdown logic
   const mobileMenuBtn = document.querySelector(".mobile-menu-btn")
-  const nav = document.querySelector(".nav")
+  const mobileNavDropdown = document.getElementById("mobileNavDropdown")
 
-  if (mobileMenuBtn && nav) {
-    mobileMenuBtn.addEventListener("click", () => {
-      nav.style.display = nav.style.display === "block" ? "none" : "block"
+  // Toggle dropdown
+  mobileMenuBtn.addEventListener("click", (e) => {
+    e.stopPropagation()
+    const isOpen = mobileNavDropdown.style.display === "block"
+    mobileNavDropdown.style.display = isOpen ? "none" : "block"
+  })
+
+  // Close dropdown when clicking outside
+  document.addEventListener("click", (e) => {
+    if (
+      mobileNavDropdown.style.display === "block" &&
+      !mobileNavDropdown.contains(e.target) &&
+      e.target !== mobileMenuBtn
+    ) {
+      mobileNavDropdown.style.display = "none"
+    }
+  })
+
+  // Close dropdown when a link is clicked
+  mobileNavDropdown.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      mobileNavDropdown.style.display = "none"
     })
-  }
+  })
 
   // Smooth scrolling for anchor links
   document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
